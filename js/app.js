@@ -8,9 +8,9 @@ function _app(){
   ];
 
   this.getNextResto = function() {
-    for(var i in self.restos) {
+    for(var i=0; i<self.restos.length; i++) {
       if(self.restos[i].visited == undefined) {
-        self.restos[i].visited == true;
+        self.restos[i].visited = true;
         return self.restos[i];
       }
     }
@@ -21,9 +21,8 @@ function _app(){
   this.myPosition = {lat:-32.94346,lng:-60.67042000000001}
   this.hyperlapse = {};
 
-  
   this.getDirections = function(origin, dest) {
-    
+   
     if(dest == null || origin == null) return;
     
     self.hyperlapse = new Hyperlapse(document.getElementById('pano'), {
