@@ -54,7 +54,7 @@ var app = angular.module('baresApp', [])
     
     self.hyperlapse = new Hyperlapse(document.getElementById('pano'), {
       lookat: new google.maps.LatLng(origin.lat, origin.lng),
-      zoom: 3,
+      zoom: 2,
       use_lookat: false,
       elevation: 50,
       width: w,
