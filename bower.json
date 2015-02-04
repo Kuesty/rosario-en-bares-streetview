@@ -1,0 +1,21 @@
+{
+  "name": "rosario-en-bares-streetview",
+  "version": "0.0.0",
+  "homepage": "destacados.kuesty.com",
+  "authors": [
+    "Urucas <hello@urucas.com>"
+  ],
+  "main": "index.html",
+  "moduleType": [
+    "es6",
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
