@@ -4,6 +4,8 @@
 	<title>Simple Example</title> 
   
   <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"></link>
+  <link href="css/styles.css" rel="stylesheet" />
+  <link rel="import" href="/elements/pri-loader.html">
   
   <!-- scripts -->
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script> 
@@ -18,8 +20,16 @@
 
 </head> 
 <body id="controller" ng-controller="BaresCtrl as controller"> 
-
+  
+  <div class="header">
+    <pri-loader elid="priloader" color="#ffffff" size="30" state="spin"></pri-loader>
+  </div>
+  
   <div id="pano"></div>
+
+  <div class="row">
+    <div id="map-canvas" class="col-md-4 col-sd-12 col-xs-12"></div>
+  </div>
 
 </body> 
 </html>

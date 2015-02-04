@@ -157,7 +157,7 @@ var Hyperlapse = function(container, params) {
  	 * @param {Number} e.position
  	 * @param {HyperlapsePoint} e.point
 	 */
-	var handleFrame = function (e) { 
+	var handleFrame = function (e) {
     if (!self._loop && e.position==(self.length()- 1) ) {
       self.pause();
       if (self.onRouteFinishingLine) { 
