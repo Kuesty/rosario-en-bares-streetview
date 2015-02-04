@@ -1,31 +1,34 @@
-function _app(){
+
+var app = angular.module('baresApp', [])
+.controller('BaresCtrl', function($scope){
   
   var self = this;
-
   this.restos = [
-    { lat:-32.945877, lng:-60.647904, n:"Queens" },
-    { lat:-32.935518, lng:-60.651356, n:"Rock & Feller's" }
+    { id:354,lat:-32.945877, lng:-60.647904, n:"Queens" },
+    { id:118,lat:-32.935518, lng:-60.651356, n:"Rock & Feller's" }
   ];
-
-  this.getNextResto = function() {
-    for(var i=0; i<self.restos.length; i++) {
-      if(self.restos[i].visited == undefined) {
-        self.restos[i].visited = true;
-        return self.restos[i];
-      }
+  
+  this.getResto = function(id) {
+    for(var i=0;i<self.restos.length;i++){
+      if(self.restos[i].id == id) return self.restos[i];
     }
     return null;
   }
 
-  // TODO - change with navigator geolocation
-  this.myPosition = {lat:-32.94346,lng:-60.67042000000001}
+  this.getRestoByIndex = function(i) {
+    return self.restos[i];  
+  }
+
+  // dafault origin is Rosario airport -32.918255,-60.778975 (?)
+  this.myPosition = {lat:-32.918255,lng:-60.67042000000001}
+  
+  // Hyperlapse.js instance
   this.hyperlapse = {};
 
   this.getDirections = function(origin, dest) {
-   
-    if(dest == null || origin == null) return;
     
-    self.hyperlapse = new Hyperlapse(document.getElementById('pano'), {
+    if(dest == null || origin == null) return;
+     self.hyperlapse = new Hyperlapse(document.getElementById('pano'), {
       lookat: new google.maps.LatLng(origin.lat, origin.lng),
       zoom: 1,
       use_lookat: true,
@@ -69,10 +72,19 @@ function _app(){
     });
   }
 
-  self.getDirections(self.myPosition, self.getNextResto());
+  this.moveTo = function(i) {
+    console.log(i);
+    self.getDirections(self.myPosition, self.getRestoByIndex(i));
+  }
+  
+});
 
-};
-
-function init() {
-  var app = new _app();
+function controller(){
+  return angular.element(document.getElementById('controller')).scope().controller;
 }
+
+$q = jQuery.noConflict();
+$q(document).ready(function(){
+  controller().moveTo(0);
+});
+
