@@ -1,0 +1,32 @@
+body{
+  margin:0px;
+  padding:0px;
+}
+
+#map-canvas{
+  width:250px;
+  height:250px;
+  border:2px solid #222;
+  position:absolute;
+  right:10px;
+  top:50px;
+}
+
+#pano {
+  padding:0px;
+  width:100%;
+  height:100%;
+}
+
+.header {
+  width:100%;
+  height:40px;
+  background-color:#333;
+  border-bottom:1px solid #616161;
+}
+
+pri-loader {
+  position:absolute;
+  left:50%;
+  top:2px;
+}
