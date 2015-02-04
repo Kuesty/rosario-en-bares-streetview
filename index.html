@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html> 
+<html ng-app="baresApp"> 
 <head> 
 	<title>Simple Example</title> 
-
-</head> 
-<body> 
-	<div id="pano"></div>
-
+  
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"></link>
+  
   <!-- scripts -->
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script> 
 	<script src="js/three.min.js"></script>
 	<script src="js/GSVPano.js"></script>
 	<script src="js/Hyperlapse.js"></script>
-	<script src="js/app.js"></script>
-	<script>window.onload = init;</script> 
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="js/app.js"></script>
+	
+
+</head> 
+<body id="controller" ng-controller="BaresCtrl as controller"> 
+
+  <div id="pano"></div>
 
 </body> 
 </html>
