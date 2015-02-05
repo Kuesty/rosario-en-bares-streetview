@@ -1,12 +1,62 @@
 
-var app = angular.module('baresApp', [])
-.controller('BaresCtrl', function($scope){
+angular.module('baresApp', [])
+
+.factory("Utils", function(){
+  return {
+    baseURL: "http://kuesty.com/api"   
+  }
+})
+
+.factory("Bares", function($http, Utils){
+  var destacados = [];
+  return {
+    getDestacados: function(){
+      var promise = new Promise(function(resolve, reject){
+        if(destacados.length) {
+          resolve(destacados);
+          return;
+        }
+        var url = Utils.baseURL + "/gethighlights"; 
+        $http({ method: 'GET', url: url})
+  			.success(function(data, status, headers, config){
+				  destacados = data.highlights;
+  				resolve(destacados);
+	  		})
+        .error(function(data, status, headers, config){
+	  			reject({error: "Ha ocurrido un error al intentar conectar con el servidor, por favor intente nuevamente en unos segundos!"});
+			  });
+      });
+      return promise;  
+    }  
+  }
+})
+
+.filter('encode', function(){
+  return function(value){
+    return $q('<div/>').html(value).text();
+  }  
+})
+
+.filter('prettyurl', function(){
+  return function(value){
+    return $q('<div/>').html(value).text().replace(/\s+/g, "-").replace(/-{2,}/g, "-");
+  }  
+})
+
+.controller('BaresCtrl', ['$scope', 'Bares', function($scope, Bares){
   
   var self = this;
+  
+  self.id = Math.random();
+  
+  this.restos = [];
+  this.percent = 100;
+  /*
   this.restos = [
-    { id:354,lat:-32.945877, lng:-60.647904, n:"Queens" },
-    { id:118,lat:-32.935518, lng:-60.651356, n:"Rock & Feller's" }
+    { id:354,lat:-32.945877, lng:-60.647904, nombre:"Queens" },
+    { id:118,lat:-32.935518, lng:-60.651356, nombre:"Rock & Feller's" }
   ];
+  */
   
   this.getResto = function(id) {
     for(var i=0;i<self.restos.length;i++){
@@ -49,12 +99,12 @@ var app = angular.module('baresApp', [])
     
     if(dest == null || origin == null) return;
     
-    var w = $q("#pano").width();
-    var h = $q("#pano").height();
+    var w = $q(window).width();
+    var h = $q(window).height()-40;
     
     self.hyperlapse = new Hyperlapse(document.getElementById('pano'), {
       lookat: new google.maps.LatLng(origin.lat, origin.lng),
-      zoom: 2,
+      zoom: 1,
       use_lookat: false,
       elevation: 50,
       width: w,
@@ -71,6 +121,8 @@ var app = angular.module('baresApp', [])
 
     self.hyperlapse.onLoadComplete = function(e) {
       self.hyperlapse.play();
+      self.percent = 100;
+      $scope.$apply();
     };
  
     self.hyperlapse.onFrame = function(e) {
@@ -93,13 +145,15 @@ var app = angular.module('baresApp', [])
     }
 
     self.hyperlapse.onRouteFinishingLine = function(e) {
-      var newOrigin = {
+       self.myPosition = {
         lat: e.point.location.lat(),
         lng: e.point.location.lng()
       }
     }
 
-    self.directions_service = self.directions_service || new google.maps.DirectionsService();
+    self.directions_service = 
+      self.directions_service || new google.maps.DirectionsService();
+    
     self.route = {
       request:{
         origin: new google.maps.LatLng(origin.lat, origin.lng),
@@ -107,28 +161,42 @@ var app = angular.module('baresApp', [])
         travelMode: google.maps.DirectionsTravelMode.DRIVING
       }
     };
+    
     self.directions_service.route(self.route.request, function(response, status) {
       if (status == google.maps.DirectionsStatus.OK) {
+        self.percent = 0;
         self.hyperlapse.generate( {route:response, loop:false} );
+        $scope.$apply();
       } else {
-      console.log(status);
+        console.log(status);
       }
     });
   }
 
-  this.moveTo = function(i) {
-    self.getDirections(self.myPosition, self.getRestoByIndex(i));
-  }
-  
   this.init = function(){
     // create google maps instance
     var map = self.getMap();
-
-    // move to first position
-    self.moveTo(0);
+    self.percent = 0;
+    Bares.getDestacados().then(function(destacados){
+      self.restos = destacados;
+      self.percent = 100;
+      $scope.$apply();
+    });
   }
 
-});
+  this.selectResto = function(id) {
+    var resto = self.getResto(id);
+    self.getDirections(
+      self.myPosition, 
+      {lat:resto.latitud, lng:resto.longitud}
+    );
+  }
+
+  this.updateHyperlapseSize = function(w, h){
+    if(self.hyperlapse) self.hyperlapse.setSize(w,h);
+  }
+
+}]);
 
 function controller(){
   return angular.element(document.getElementById('controller')).scope().controller;
@@ -136,6 +204,17 @@ function controller(){
 
 $q = jQuery.noConflict();
 $q(document).ready(function(){
+
   controller().init();
+
+  $q('.menu-link').bigSlide();
+  $q(window).resize(function() {
+    controller().updateHyperlapseSize(
+      $q(window).width(),
+      $q(window).height()
+    );
+  });
+  
 });
+
 
