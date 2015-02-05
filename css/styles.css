@@ -1,13 +1,18 @@
 body{
   margin:0px;
   padding:0px;
+  background:url('../img/bg-pattern.png');
+}
+
+a {
+  text-decoration:none !important;  
 }
 
 #map-canvas{
   width:250px;
   height:250px;
   border:2px solid #222;
-  position:absolute;
+  position:fixed !important;
   right:10px;
   top:50px;
 }
@@ -21,12 +26,85 @@ body{
 .header {
   width:100%;
   height:40px;
-  background-color:#333;
-  border-bottom:1px solid #616161;
+  background-color:#fff;
+  border-bottom:2px solid #fc5a17;
+  position:fixed;
+  top:0px;
+  left:0px;
+}
+
+.header p{
+  text-align:center;
+  padding-top:8px;
 }
 
 pri-loader {
   position:absolute;
   left:50%;
   top:2px;
+}
+
+.panel {
+    position: fixed;
+    left: -15.625em; /*right or left and the width of your navigation panel*/
+    width: 15.625em; /*should match the above value*/
+    top:40px !important;
+    border-radius:0px !important;
+    background-color:#fff;
+    background:url('../img/food_back.png');
+}
+
+.panel ul, .panel li{
+  margin:0px;
+  padding:0px;
+  list-style-type:none;
+}
+
+.link-resto a{
+  padding:8px;
+  display:block;
+  color:#616161 !important;
+}
+
+.panel .destacados{
+  text-align:center;
+  color:#616161;
+  margin:0px 4px;
+  border-bottom:1px solid #ccc;
+  padding:6px 0px;
+}
+
+.menu-link{
+  float:left;  
+}
+
+.menu-link, .menu-link:visited, .menu-link:link{
+  color:#fc5a17;
+  font-size:1.6em;
+  margin-left:8px;
+  padding-top:2px;
+  text-decoration:none;
+}
+
+.menu-link:hover, .menu-link:active{
+  color:#fc5a17;
+  text-decoration:none;
+}
+
+.preloader {
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  z-index:-1;
+  background:rgba(0,0,0,0.6);
+}
+
+.preloader p{
+  color:#fff;
+  text-align:center;
+  position:relative;
+  width:100%;
+  top:40%;
 }
